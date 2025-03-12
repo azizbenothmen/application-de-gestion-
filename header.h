@@ -4,8 +4,8 @@
 using namespace std;
 #pragma once
 
-
-class DATE{
+/// partie Mohamed Aziz Taalouch
+class DATE{   //j'ai pas trouvé un type date en c++ donc j'ai crée une classe date
     private:
         int jour;
         int mois;
@@ -25,6 +25,7 @@ class Personne{
     public:
         Personne(string nom, string prenom, int tel, int CIN, string email);
         virtual void afficher()=0;
+        void modifier(int tel, string email);
         ~Personne();
 };
 class vehicule{
@@ -41,26 +42,26 @@ class vehicule{
         ~vehicule();
 };
 
-class Client: public Personne{
+class Client: virtual public Personne{
     private:
         int id;
         string type;
         DATE ddv;
         vector<vehicule*> vehicules;
     public:
-        Client(int id, string type, DATE ddv, vector<vehicule*> vehicules):Personne(nom, prenom, tel, CIN, email){};
+        Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv, vector<vehicule*> vehicules);
         void ajouterVehicule(vehicule* v);
         void deleteVehicule(vehicule *v);
         ~Client();
 };
-class Employe: public Personne{
+class Employe: virtual public Personne{
     protected:
         int id;
         double salaire;
         DATE Drecrutement;
     public:
-        Employe(int id, double salaire, DATE Drecrutement):Personne(nom, prenom, tel, CIN, email){};
-        virtual void afficher()=0;
+        Employe(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement);
+        virtual void afficherDetails()=0;
         ~Employe();
 };
 class OuvrierMecanicien: public Employe{
@@ -68,9 +69,9 @@ class OuvrierMecanicien: public Employe{
         string specialite;
         vector<vehicule*> vehiculesEntretenus;
     public:
-        OuvrierMecanicien(int id, double salaire, DATE Drecrutement, string specialite, vector<vehicule*> vehiculesEntretenus)
-        : Employe(id, salaire, Drecrutement), specialite(specialite), vehiculesEntretenus(vehiculesEntretenus) {};
-        void afficher();
+        OuvrierMecanicien(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, string specialite, vector<vehicule*> vehiculesEntretenus);
+        OuvrierMecanicien(const OuvrierMecanicien& other);
+        void afficherDetails();
         ~OuvrierMecanicien();
 };
 class Gestionnaire: public Employe{
@@ -78,9 +79,8 @@ class Gestionnaire: public Employe{
         bool accesCaisse;
         string type;
     public:
-        Gestionnaire(int id, double salaire, DATE Drecrutement, bool accesCaisse, string type)
-        : Employe(id, salaire, Drecrutement), accesCaisse(accesCaisse), type(type) {};
-        void afficher();
+        Gestionnaire(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, bool accesCaisse, string type);
+        void afficherDetails();
         ~Gestionnaire();
 };
 class ClientEmployee : public Employe, public Client {
@@ -90,11 +90,10 @@ class ClientEmployee : public Employe, public Client {
         vector<string> avantages;  
         int nbrTransactionsmax; 
     public:
-        ClientEmployee(int id, double salaire, DATE Drecrutement, string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, double rabaisEmploye, int nombreTransactions, vector<string> avantages, int nbrTransactionsmax)
-            : Employe(id, salaire, Drecrutement), Client(clientId, type, ddv, vehicules), rabaisEmploye(rabaisEmploye), nombreTransactions(nombreTransactions), avantages(avantages), nbrTransactionsmax(nbrTransactionsmax) {}
+        ClientEmployee(string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement);
         ~ClientEmployee() {}
 };
-
+//Partie Aziz BenOthman
 class Produit{
     protected:
         string referance;
@@ -115,39 +114,34 @@ class liquide : public Produit{
         string type;
         string description;
     public:
-       liquide(string referance, double prix, DATE dateFabrication, int dureeGarantie, bool flammable, float volume, string viscosite, string contenance, string type, string description)
-        : Produit(referance, prix, dateFabrication, dureeGarantie), flammable(flammable), volume(volume), viscosite(viscosite), contenance(contenance), type(type), description(description) {};
+        liquide(string referance, double prix, DATE dateFabrication, int dureeGarantie, bool flammable, float volume, string viscosite, string contenance, string type, string description);
         void afficherdetails();
         ~liquide();
 };
 
-class PieceElectronique : public Produit{
+class PieceElectronique : virtual public Produit{
    private:
         double tension;
         double courant;
         vector<string> compatibilite;
-    
         public:
-        PieceElectronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite)
-        : Produit(referance, prix, dateFabrication, dureeGarantie), tension(tension), courant(courant), compatibilite(compatibilite) {};
+        PieceElectronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite);
         ~PieceElectronique();
 };
-class PieceMecanique : public Produit{
+class PieceMecanique : virtual public Produit{
     private:
         string qualité;
         string catégorie;
         string Matériaux;
     public:
-        PieceMecanique(string referance, double prix, DATE dateFabrication, int dureeGarantie, string qualité, string catégorie, string Matériaux)
-        : Produit(referance, prix, dateFabrication, dureeGarantie), qualité(qualité), catégorie(catégorie), Matériaux(Matériaux) {};
+        PieceMecanique(string referance, double prix, DATE dateFabrication, int dureeGarantie, string qualité, string catégorie, string Matériaux);
         ~PieceMecanique();
-}
+};
 class PieceMecatronique: public PieceMecanique ,  public PieceElectronique{
     private:
         vector<string> compatibilite;
     public:
-        PieceMecatronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite, string qualité, string catégorie, string Matériaux)
-        :PieceElectronique(referance, prix, dateFabrication, dureeGarantie, tension, courant, compatibilite), PieceMecanique(referance, prix, dateFabrication, dureeGarantie, qualité, catégorie, Matériaux) {};
+        PieceMecatronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite, string qualité, string catégorie, string Matériaux);
         ~PieceMecatronique();
 };
 
@@ -160,8 +154,7 @@ class RendezVous{
        OuvrierMecanicien employee;
        string description;
     public:
-        RendezVous(DATE date, float heure, Client client, OuvrierMecanicien employee, string description)
-        : date(date), heure(heure), client(client), employee(employee), description(description) {};
+        RendezVous(DATE date, float heure, Client client, OuvrierMecanicien employee, string description);
         void modifierRV();
         ~RendezVous();
 
@@ -177,8 +170,7 @@ class Reparation{
         Employe employee;
         string description;
     public:
-        Reparation(DATE date, Client client, vehicule vehicule, Facture facture, Employe employee, string description)
-        : date(date), client(client), vehicule(vehicule), facture(facture), employee(employee), description(description) {};
+        Reparation(DATE date, Client client, vehicule vehicule, Facture facture, Employe employee, string description);
         ~Reparation();
       
 };
@@ -191,11 +183,9 @@ class Facture{
         string modepaiement;
         string status;
     public:
-        Facture(int id, float montant, DATE date, string modepaiement, string status)
-        : id(id), montant(montant), date(date), modepaiement(modepaiement), status(status) {};
+        Facture(int id, float montant, DATE date, string modepaiement, string status);
         void afficher();
         int CalculTax();
-        void GenererFacture();
         ~Facture();
 };
 

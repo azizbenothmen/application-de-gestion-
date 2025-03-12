@@ -27,6 +27,19 @@ class Personne{
         virtual void afficher()=0;
         ~Personne();
 };
+class vehicule{
+    protected:
+        string immatriculation;
+        string marque;
+        string modele;
+        DATE dateAchat;
+        int kilometrage;
+    public:
+        vehicule(string immatriculation, string marque, string modele, DATE dateAchat, int kilometrage);
+        void afficher();
+        void modifierKilometrage(int kilometrage);
+        ~vehicule();
+};
 
 class Client: public Personne{
     private:
@@ -80,19 +93,6 @@ class ClientEmployee : public Employe, public Client {
         ClientEmployee(int id, double salaire, DATE Drecrutement, string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, double rabaisEmploye, int nombreTransactions, vector<string> avantages, int nbrTransactionsmax)
             : Employe(id, salaire, Drecrutement), Client(clientId, type, ddv, vehicules), rabaisEmploye(rabaisEmploye), nombreTransactions(nombreTransactions), avantages(avantages), nbrTransactionsmax(nbrTransactionsmax) {}
         ~ClientEmployee() {}
-};
-class vehicule{
-    protected:
-        string immatriculation;
-        string marque;
-        string modele;
-        DATE dateAchat;
-        int kilometrage;
-    public:
-        vehicule(string immatriculation, string marque, string modele, DATE dateAchat, int kilometrage);
-        void afficher();
-        void modifierKilometrage(int kilometrage);
-        ~vehicule();
 };
 
 class Produit{

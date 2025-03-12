@@ -121,34 +121,34 @@ class liquide : public Produit{
         ~liquide();
 };
 
-class PiéceElectronique : public Produit{
+class PieceElectronique : public Produit{
    private:
         double tension;
         double courant;
         vector<string> compatibilite;
     
         public:
-        PiéceElectronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite)
+        PieceElectronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite)
         : Produit(referance, prix, dateFabrication, dureeGarantie), tension(tension), courant(courant), compatibilite(compatibilite) {};
-        ~PiéceElectronique();
+        ~PieceElectronique();
 };
-class PiéceMecanique : public Produit{
+class PieceMecanique : public Produit{
     private:
         string qualité;
         string catégorie;
         string Matériaux;
     public:
-        PiéceMecanique(string referance, double prix, DATE dateFabrication, int dureeGarantie, string qualité, string catégorie, string Matériaux)
+        PieceMecanique(string referance, double prix, DATE dateFabrication, int dureeGarantie, string qualité, string catégorie, string Matériaux)
         : Produit(referance, prix, dateFabrication, dureeGarantie), qualité(qualité), catégorie(catégorie), Matériaux(Matériaux) {};
-        ~PiéceMecanique();
+        ~PieceMecanique();
 }
-class PiéceMecatronique: public PiéceMecanique ,  public PiéceElectronique{
+class PieceMecatronique: public PieceMecanique ,  public PieceElectronique{
     private:
         vector<string> compatibilite;
     public:
-        PiéceRechElectro(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite, string qualité, string catégorie, string Matériaux)
-        :PiéceElectronique(referance, prix, dateFabrication, dureeGarantie, tension, courant, compatibilite), PiéceMecanique(referance, prix, dateFabrication, dureeGarantie, qualité, catégorie, Matériaux) {};
-        ~PiéceMecatronique();
+        PieceMecatronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite, string qualité, string catégorie, string Matériaux)
+        :PieceElectronique(referance, prix, dateFabrication, dureeGarantie, tension, courant, compatibilite), PieceMecanique(referance, prix, dateFabrication, dureeGarantie, qualité, catégorie, Matériaux) {};
+        ~PieceMecatronique();
 };
 
 

@@ -11,6 +11,7 @@ class DATE{   //j'ai pas trouvé un type date en c++ donc j'ai crée une classe 
         int mois;
         int annee;
     public:
+        DATE();
         DATE(int jour, int mois, int annee);
         void afficher();
         ~DATE();
@@ -47,9 +48,11 @@ class Client: virtual public Personne{
         int id;
         string type;
         DATE ddv;
+        int nbrVehicules;
         vector<vehicule*> vehicules;
     public:
-        Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv, vector<vehicule*> vehicules);
+        Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv,int nbrVehicules, vector<vehicule*> vehicules);
+        Client(const Client& other);
         void ajouterVehicule(vehicule* v);
         void deleteVehicule(vehicule *v);
         ~Client();

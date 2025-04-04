@@ -95,23 +95,39 @@ void Client::ajouterVehicule(vehicule* v){
     nbrVehicules++;
 }
 
-void Client::deleteVehicule(vehicule *v){
-   /* vector<vehicule*> temp;
-    for (int i = 0; i < nbrVehicules; i++) {
-        if (vehicules[i] != v) {
-            temp.push_back(vehicules[i]); 
-        }
-    }
-    vehicules = temp; 
-    nbrVehicules--; */
-
-    for (int i=0; i<nbrVehicules; i++){
-        if (vehicules[i]==v){
-            vehicules.erase(vehicules.begin()+i);
+void Client::deleteVehicule(string immatriculation){
+    for (int j=0; j<nbrVehicules; j++){
+        if (vehicules[j]->immatriculation==immatriculation){
+            delete vehicules[j];
+            vehicules.erase(vehicules.begin()+j);
             nbrVehicules--;
             break;
         }
     }
+}
+
+
+
+
+void Client::afficher(){
+    cout<<"nom: "<<nom<<endl;
+    cout<<"prenom: "<<prenom<<endl;
+    cout<<"tel: "<<tel<<endl;
+    cout<<"CIN: "<<CIN<<endl;
+    cout<<"email: "<<email<<endl;    
+    cout<<"id: "<<id<<endl;
+    cout<<"type: "<<type<<endl;
+    cout<<"date de derniere visite: ";
+    ddv.afficher();
+    cout<<"nombre de vehicules: "<<nbrVehicules<<endl;
+    for (int i=0; i<nbrVehicules; i++){
+        cout<<"vehicule NUMERO : "<<i+1<<endl;
+        vehicules[i]->afficher();
+    }
+}
+void Client::modifier(int t, string e){
+    tel=t;
+    email=e;
 }
 
 Client::~Client(){
@@ -120,4 +136,49 @@ Client::~Client(){
     }
     cout<<"destruction du client"<<endl;
 }
-   
+
+///////////////////////
+///////////employe
+Employe::Employe(string n, string p, int t, int c, string e,int i, double s, DATE d): Personne(n,p,t,c,e){
+    id=i;
+    salaire=s;
+    Drecrutement=d;
+}
+
+void Employe::afficherDetails(){
+    cout<<"id: "<<id<<endl;
+    cout<<"salaire: "<<salaire<<endl;
+    cout<<"date de recrutement: ";
+    Drecrutement.afficher();
+}
+Employe::~Employe(){
+    cout<<"destruction de l'employe"<<endl;
+}
+///////////////////////
+
+///////////ouvrier mecanicien
+
+OuvrierMecanicien::OuvrierMecanicien(string n, string p, int t, int c, string e,int i, double s, DATE d, string s1, vector<vehicule*> v): Employe(n,p,t,c,e,i,s,d){
+    specialite=s1;
+    vehiculesEntretenus=v;
+}
+
+OuvrierMecanicien::OuvrierMecanicien(const OuvrierMecanicien& other): Employe(other.nom, other.prenom, other.tel, other.CIN, other.email, other.id, other.salaire, other.Drecrutement){
+    specialite=other.specialite;
+    for (int i=0; i<other.vehiculesEntretenus.size(); i++){
+        vehiculesEntretenus.push_back(new vehicule(*other.vehiculesEntretenus[i])); 
+    }
+}
+void OuvrierMecanicien::afficherDetails(){
+    Employe::afficherDetails();
+    cout<<"specialite: "<<specialite<<endl;
+    cout<<"vehicules entretiens: "<<endl;
+    for (int i=0; i<vehiculesEntretenus.size(); i++){
+        vehiculesEntretenus[i]->afficher();
+    }
+}
+
+OuvrierMecanicien::~OuvrierMecanicien(){
+    cout<<"destruction de l'ouvrier mecanicien"<<endl;
+}
+///////////////////////

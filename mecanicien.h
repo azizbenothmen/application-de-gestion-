@@ -31,12 +31,12 @@ class Personne{
 };
 class vehicule{
     protected:
-        string immatriculation;
         string marque;
         string modele;
         DATE dateAchat;
         int kilometrage;
     public:
+        string immatriculation;
         vehicule(string immatriculation, string marque, string modele, DATE dateAchat, int kilometrage);
         void afficher();
         void modifierKilometrage(int kilometrage);
@@ -54,7 +54,9 @@ class Client: virtual public Personne{
         Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv,int nbrVehicules, vector<vehicule*> vehicules);
         Client(const Client& other);
         void ajouterVehicule(vehicule* v);
-        void deleteVehicule(vehicule *v);
+        void deleteVehicule(string immatriculation);
+        void afficher();
+        void modifier(int tel, string email);
         ~Client();
 };
 class Employe: virtual public Personne{
@@ -96,6 +98,8 @@ class ClientEmployee : public Employe, public Client {
         ClientEmployee(string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement);
         ~ClientEmployee() {}
 };
+
+/*
 //Partie Aziz BenOthman
 class Produit{
     protected:
@@ -148,7 +152,7 @@ class PieceMecatronique: public PieceMecanique ,  public PieceElectronique{
         ~PieceMecatronique();
 };
 
-
+/*
 class RendezVous{
     private:
        DATE date;
@@ -192,7 +196,7 @@ class Facture{
         ~Facture();
 };
 
-
+*/
 
 
 

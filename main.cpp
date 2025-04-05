@@ -20,7 +20,16 @@ int main(){
     c1.afficher();
     Client c2=c1;
     c2.afficher();
+    //a verifier
+    OuvrierMecanicien om("ahmed", "tria", 22666777, 14425568, "email", 8, 1533.5, DATE(1, 1, 2020), "mecanique", vector<vehicule*>());
+    om.afficherDetails();
+
+    Gestionnaire g("ahmed", "tria", 22666777, 14425568, "email", 8, 1533.5, DATE(1, 1, 2020), true, "mecanique");
+    g.afficherDetails();
     
+
+    ClientEmployee ce("ahmed", "tria", 22666777, 14425568, "email", 8, "particulier", DATE(1, 1, 2020), vector<vehicule*>(), 8, 1533.5, DATE(1, 1, 2020));
+    //a verifier
     /////////////partie de mohamed aziz taalouch
 
 

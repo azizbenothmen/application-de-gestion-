@@ -85,7 +85,7 @@ class Gestionnaire: public Employe{
         string type;
     public:
         Gestionnaire(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, bool accesCaisse, string type);
-        void afficherDetails();
+        void afficherDetails() override;
         ~Gestionnaire();
 };
 class ClientEmployee : public Employe, public Client {
@@ -96,7 +96,7 @@ class ClientEmployee : public Employe, public Client {
         int nbrTransactionsmax; 
     public:
         ClientEmployee(string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement);
-        ~ClientEmployee() {}
+        ~ClientEmployee();
 };
 
 /*

@@ -106,9 +106,6 @@ void Client::deleteVehicule(string immatriculation){
     }
 }
 
-
-
-
 void Client::afficher(){
     cout<<"nom: "<<nom<<endl;
     cout<<"prenom: "<<prenom<<endl;
@@ -180,5 +177,32 @@ void OuvrierMecanicien::afficherDetails(){
 
 OuvrierMecanicien::~OuvrierMecanicien(){
     cout<<"destruction de l'ouvrier mecanicien"<<endl;
+}
+///////////////////////
+///////////gestionnaire
+Gestionnaire::Gestionnaire(string n, string p, int t, int c, string e,int i, double s, DATE d, bool a, string ty): Employe(n,p,t,c,e,i,s,d){
+    accesCaisse=a;
+    type=ty;
+}
+
+void Gestionnaire::afficherDetails(){
+    Employe::afficherDetails();
+    cout<<"acces caisse: "<<accesCaisse<<endl;
+    cout<<"type: "<<type<<endl;
+}
+Gestionnaire::~Gestionnaire(){
+    cout<<"destruction du gestionnaire"<<endl;
+}
+///////////////////////
+///////////client employee
+ClientEmployee::ClientEmployee(string n, string p, int t, int c, string e, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement)
+    : Employe(n, p, t, c, e, employeId, salaire, Drecrutement), Client(n, p, t, c, e, clientId, type, ddv, 0, vehicules) {
+    rabaisEmploye = 0.1; 
+    nombreTransactions = 0;
+    nbrTransactionsmax = 10; 
+}
+
+ClientEmployee::~ClientEmployee() {
+    cout << "Destruction de ClientEmployee" << endl;
 }
 ///////////////////////

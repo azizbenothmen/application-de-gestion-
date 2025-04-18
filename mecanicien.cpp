@@ -19,19 +19,50 @@ void DATE::afficher(){
     cout<<jour<<"/"<<mois<<"/"<<annee<<endl;
 }
 
+ostream& operator<<(ostream& os, const DATE& d) {
+    os << d.jour << "/" << d.mois << "/" << d.annee;
+    return os;
+}
+
 
 DATE::~DATE(){
     cout<<"destruction de la date"<<endl;
 }
-/////////////////////////
+///////////date
 
 ///////////personne
-Personne::Personne(string n, string p, int t, int c, string e){
+Personne::Personne(string n, string p, int t, int c, string e)
+{
     nom=n;
     prenom=p;
     tel=t;
     CIN=c;
     email=e;
+}
+
+Personne::Personne() {
+    nom = "";
+    prenom = "";
+    tel = 0;
+    CIN = 0;
+    email = "";
+}
+
+void Personne::afficher(){
+    cout<<"nom: "<<nom<<endl;
+    cout<<"prenom: "<<prenom<<endl;
+    cout<<"tel: "<<tel<<endl;
+    cout<<"CIN: "<<CIN<<endl;
+    cout<<"email: "<<email<<endl;    
+}
+
+ostream& operator<<(ostream& os, const Personne& p) {
+    os << "nom: " << p.nom << endl;
+    os << "prenom: " << p.prenom << endl;
+    os << "tel: " << p.tel << endl;
+    os << "CIN: " << p.CIN << endl;
+    os << "email: " << p.email << endl;
+    return os;
 }
 
 void Personne::modifier(int t, string e){
@@ -42,15 +73,22 @@ void Personne::modifier(int t, string e){
 Personne::~Personne(){
     cout<<"destruction de la personne"<<endl;
 }
-/////////////////////////
+///////////personne
 
 ///////////vehicule
-vehicule::vehicule(string i, string ma, string mo, DATE da, int k){
+vehicule::vehicule(string ma, string mo, DATE da, int k,string i){
     immatriculation=i;
     marque=ma;
     modele=mo;
     dateAchat=da;
     kilometrage=k;
+}
+
+vehicule::vehicule(){
+    immatriculation="";
+    marque="";
+    modele="";
+    kilometrage=0;
 }
 
 void vehicule::afficher(){
@@ -62,14 +100,27 @@ void vehicule::afficher(){
     cout<<"kilometrage: "<<kilometrage<<endl;
 }
 
+ostream& operator<<(ostream& os, const vehicule& v) {
+    os << "immatriculation: " << v.immatriculation << endl;
+    os << "marque: " << v.marque << endl;
+    os << "modele: " << v.modele << endl;
+    os << "date d'achat: " << v.dateAchat << endl;
+    os << "kilometrage: " << v.kilometrage << endl;
+    return os;
+}
+
 void vehicule::modifierKilometrage(int k){
     kilometrage=k;
+}
+
+string vehicule::getImmatriculation() const {
+    return immatriculation;
 }
 
 vehicule::~vehicule(){
     cout<<"destruction du vehicule"<<endl;
 }
-/////////////////
+///////////vehicule
 
 ///////////client
 Client::Client(string n, string p, int t, int c, string e,int i, string ty, DATE d,int nbrV, vector<vehicule*> v): Personne(n,p,t,c,e){
@@ -90,6 +141,15 @@ Client::Client(const Client& other): Personne(other.nom, other.prenom, other.tel
     }
 }
 
+Client Client::operator+(const Client& other) {
+    Client result(*this);
+    for (int i = 0; i < other.nbrVehicules; i++) {
+        result.ajouterVehicule(new vehicule(*other.vehicules[i]));
+    }
+    result.nbrVehicules = this->nbrVehicules + other.nbrVehicules;
+    return result;
+}
+
 void Client::ajouterVehicule(vehicule* v){
     vehicules.push_back(v);
     nbrVehicules++;
@@ -97,7 +157,7 @@ void Client::ajouterVehicule(vehicule* v){
 
 void Client::deleteVehicule(string immatriculation){
     for (int j=0; j<nbrVehicules; j++){
-        if (vehicules[j]->immatriculation==immatriculation){
+        if (vehicules[j]->getImmatriculation() == immatriculation) {
             delete vehicules[j];
             vehicules.erase(vehicules.begin()+j);
             nbrVehicules--;
@@ -107,11 +167,7 @@ void Client::deleteVehicule(string immatriculation){
 }
 
 void Client::afficher(){
-    cout<<"nom: "<<nom<<endl;
-    cout<<"prenom: "<<prenom<<endl;
-    cout<<"tel: "<<tel<<endl;
-    cout<<"CIN: "<<CIN<<endl;
-    cout<<"email: "<<email<<endl;    
+    Personne::afficher();
     cout<<"id: "<<id<<endl;
     cout<<"type: "<<type<<endl;
     cout<<"date de derniere visite: ";
@@ -122,6 +178,20 @@ void Client::afficher(){
         vehicules[i]->afficher();
     }
 }
+
+ostream& operator<<(ostream& os, const Client& c) {
+    os << static_cast<const Personne&>(c);
+    os << "id: " << c.id << endl;
+    os << "type: " << c.type << endl;
+    os << "date de derniere visite: " << c.ddv << endl;
+    os << "nombre de vehicules: " << c.nbrVehicules << endl;
+    for (int i = 0; i < c.nbrVehicules; i++) {
+        os << "vehicule NUMERO : " << i+1 << endl;
+        os << *(c.vehicules[i]) << endl;
+    }
+    return os;
+}
+
 void Client::modifier(int t, string e){
     tel=t;
     email=e;
@@ -134,75 +204,152 @@ Client::~Client(){
     cout<<"destruction du client"<<endl;
 }
 
-///////////////////////
+///////////client
+
 ///////////employe
-Employe::Employe(string n, string p, int t, int c, string e,int i, double s, DATE d): Personne(n,p,t,c,e){
+Employe::Employe(string n, string p, int t, int c, string e,int i, double s, DATE d): 
+Personne(n,p,t,c,e){
     id=i;
     salaire=s;
     Drecrutement=d;
 }
 
-void Employe::afficherDetails(){
-    cout<<"id: "<<id<<endl;
-    cout<<"salaire: "<<salaire<<endl;
-    cout<<"date de recrutement: ";
-    Drecrutement.afficher();
+
+void Employe::augmentationSalaire(){
+    salaire=salaire*1.1;
+    cout<<"salaire modifié"<<endl;
+
+}
+ostream& operator<<(ostream& os, const Employe& e) {
+    os << static_cast<const Personne&>(e);
+    os << "id: " << e.id << endl;
+    os << "salaire: " << e.salaire << endl;
+    os << "Date de recrutement: " << e.Drecrutement << endl;
+    return os;
 }
 Employe::~Employe(){
     cout<<"destruction de l'employe"<<endl;
 }
-///////////////////////
+///////////employe
 
 ///////////ouvrier mecanicien
 
-OuvrierMecanicien::OuvrierMecanicien(string n, string p, int t, int c, string e,int i, double s, DATE d, string s1, vector<vehicule*> v): Employe(n,p,t,c,e,i,s,d){
-    specialite=s1;
-    vehiculesEntretenus=v;
+OuvrierMecanicien::OuvrierMecanicien(string n, string p, int t, int c, string e, int i, double s, DATE d, string s1, vector<vehicule*> v) 
+    : Personne(n, p, t, c, e), Employe(n, p, t, c, e, i, s, d) {
+    specialite = s1;
+    vehiculesEntretenus = v;
+}
+OuvrierMecanicien::OuvrierMecanicien(const OuvrierMecanicien& other) 
+    : Personne(other), Employe(other) {
+    specialite = other.specialite;
+    for (int i = 0; i < other.vehiculesEntretenus.size(); i++) {
+        vehiculesEntretenus.push_back(new vehicule(*other.vehiculesEntretenus[i]));
+    }
 }
 
-OuvrierMecanicien::OuvrierMecanicien(const OuvrierMecanicien& other): Employe(other.nom, other.prenom, other.tel, other.CIN, other.email, other.id, other.salaire, other.Drecrutement){
-    specialite=other.specialite;
-    for (int i=0; i<other.vehiculesEntretenus.size(); i++){
-        vehiculesEntretenus.push_back(new vehicule(*other.vehiculesEntretenus[i])); 
+void OuvrierMecanicien::augmentationSalaire(){
+    salaire=salaire*1.2;
+    cout<<"salaire modifié"<<endl;
+}
+
+void OuvrierMecanicien::afficher() {
+    Personne::afficher();
+    cout << "Specialite: " << specialite << endl;
+    cout << "salaire: " << salaire << endl;
+    cout << "Date de recrutement: ";
+    Drecrutement.afficher();
+    cout << "Vehicules entretenus: " << endl;
+    for (auto v : vehiculesEntretenus) {
+        v->afficher();
     }
 }
-void OuvrierMecanicien::afficherDetails(){
-    Employe::afficherDetails();
-    cout<<"specialite: "<<specialite<<endl;
-    cout<<"vehicules entretiens: "<<endl;
-    for (int i=0; i<vehiculesEntretenus.size(); i++){
-        vehiculesEntretenus[i]->afficher();
+
+ostream& operator<<(ostream& os, const OuvrierMecanicien& om) {
+    os << static_cast<const Employe&>(om);
+    os << "Specialite: " << om.specialite << endl;
+    os << "Vehicules entretenus: " << endl;
+    for (auto v : om.vehiculesEntretenus) {
+        os << *v << endl;
     }
+    return os;
 }
 
 OuvrierMecanicien::~OuvrierMecanicien(){
     cout<<"destruction de l'ouvrier mecanicien"<<endl;
 }
-///////////////////////
+///////////ouvrier mecanicien
+
 ///////////gestionnaire
-Gestionnaire::Gestionnaire(string n, string p, int t, int c, string e,int i, double s, DATE d, bool a, string ty): Employe(n,p,t,c,e,i,s,d){
+Gestionnaire::Gestionnaire(string n, string p, int t, int c, string e,int i, double s, DATE d, bool a, string ty): Personne(n, p, t, c, e), Employe(n, p, t, c, e, i, s, d){
     accesCaisse=a;
     type=ty;
 }
 
-void Gestionnaire::afficherDetails(){
-    Employe::afficherDetails();
-    cout<<"acces caisse: "<<accesCaisse<<endl;
-    cout<<"type: "<<type<<endl;
+void Gestionnaire::augmentationSalaire(){
+        salaire=salaire*1.3;
+        cout<<"salaire modifié"<<endl;
+    
 }
+void Gestionnaire::afficher() {
+    Personne::afficher();
+    cout << "Acces caisse: " << (accesCaisse ? "Oui" : "Non") << endl;
+    cout << "Type: " << type << endl;
+}
+
+ostream& operator<<(ostream& os, const Gestionnaire& g) {
+    os << static_cast<const Employe&>(g);
+    os << "Acces caisse: " << (g.accesCaisse ? "Oui" : "Non") << endl;
+    os << "Type: " << g.type << endl;
+    return os;
+}
+
 Gestionnaire::~Gestionnaire(){
     cout<<"destruction du gestionnaire"<<endl;
 }
-///////////////////////
+///////////gestionnaire
+
 ///////////client employee
 ClientEmployee::ClientEmployee(string n, string p, int t, int c, string e, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement)
-    : Employe(n, p, t, c, e, employeId, salaire, Drecrutement), Client(n, p, t, c, e, clientId, type, ddv, 0, vehicules) {
+    : Personne(n, p, t, c, e), Employe(n, p, t, c, e, employeId, salaire, Drecrutement), Client(n, p, t, c, e, clientId, type, ddv, 0, vehicules) {
     rabaisEmploye = 0.1; 
     nombreTransactions = 0;
     nbrTransactionsmax = 10; 
+}
+void ClientEmployee::augmentationSalaire() {
+    salaire=salaire*1.25;
+    cout<<"salaire modifié"<<endl;
+}
+void ClientEmployee::afficher() {
+    cout << "Nom: " << nom << endl;
+    cout << "Prenom: " << prenom << endl;
+    cout << "Tel: " << tel << endl;
+    cout << "CIN: " << CIN << endl;
+    cout << "Email: " << email << endl;
+    cout << "Rabais employe: " << rabaisEmploye * 100 << "%" << endl;
+    cout << "Nombre de transactions: " << nombreTransactions << endl;
+}
+
+ostream& operator<<(ostream& os, const ClientEmployee& ce) {
+    os << "Nom: " << ce.nom << endl;
+    os << "Prenom: " << ce.prenom << endl;
+    os << "Tel: " << ce.tel << endl;
+    os << "CIN: " << ce.CIN << endl;
+    os << "Email: " << ce.email << endl;
+    os << "Rabais employe: " << ce.rabaisEmploye * 100 << "%" << endl;
+    os << "Nombre de transactions: " << ce.nombreTransactions << endl;
+    return os;
+}
+void ClientEmployee::afficherAvantages() {
+    cout << "Avantages: " << endl;
+    for (const auto& avantage : avantages) {
+        cout << "- " << avantage << endl;
+    }
+}
+void ClientEmployee::ajouterAvantage(string avantage) {
+    avantages.push_back(avantage);
 }
 
 ClientEmployee::~ClientEmployee() {
     cout << "Destruction de ClientEmployee" << endl;
 }
-///////////////////////
+///////////client employee

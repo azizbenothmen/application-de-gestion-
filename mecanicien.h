@@ -14,6 +14,7 @@ class DATE{   //j'ai pas trouvé un type date en c++ donc j'ai crée une classe 
         DATE();
         DATE(int jour, int mois, int annee);
         void afficher();
+        friend ostream& operator<<(ostream& os, const DATE& d);
         ~DATE();
 };
 class Personne{
@@ -25,7 +26,9 @@ class Personne{
         string email;
     public:
         Personne(string nom, string prenom, int tel, int CIN, string email);
+        Personne();
         virtual void afficher()=0;
+        friend ostream& operator<<(ostream& os, const Personne& p);
         void modifier(int tel, string email);
         ~Personne();
 };
@@ -35,10 +38,13 @@ class vehicule{
         string modele;
         DATE dateAchat;
         int kilometrage;
-    public:
         string immatriculation;
-        vehicule(string immatriculation, string marque, string modele, DATE dateAchat, int kilometrage);
+    public:
+        vehicule(string marque, string modele, DATE dateAchat, int kilometrage,string immatriculation);
+        vehicule();
         void afficher();
+        friend ostream& operator<<(ostream& os, const vehicule& v);
+        string getImmatriculation() const;
         void modifierKilometrage(int kilometrage);
         ~vehicule();
 };
@@ -53,8 +59,10 @@ class Client: virtual public Personne{
     public:
         Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv,int nbrVehicules, vector<vehicule*> vehicules);
         Client(const Client& other);
+        Client operator+(const Client& other); 
         void ajouterVehicule(vehicule* v);
         void deleteVehicule(string immatriculation);
+        friend ostream& operator<<(ostream& os, const Client& c);
         void afficher();
         void modifier(int tel, string email);
         ~Client();
@@ -66,7 +74,9 @@ class Employe: virtual public Personne{
         DATE Drecrutement;
     public:
         Employe(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement);
-        virtual void afficherDetails()=0;
+        virtual void augmentationSalaire()=0;
+        friend ostream& operator<<(ostream& os, const Employe& e);
+
         ~Employe();
 };
 class OuvrierMecanicien: public Employe{
@@ -76,7 +86,10 @@ class OuvrierMecanicien: public Employe{
     public:
         OuvrierMecanicien(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, string specialite, vector<vehicule*> vehiculesEntretenus);
         OuvrierMecanicien(const OuvrierMecanicien& other);
-        void afficherDetails();
+        void augmentationSalaire() override;
+        void afficher() override;   
+        friend ostream& operator<<(ostream& os, const OuvrierMecanicien& om);
+
         ~OuvrierMecanicien();
 };
 class Gestionnaire: public Employe{
@@ -85,7 +98,10 @@ class Gestionnaire: public Employe{
         string type;
     public:
         Gestionnaire(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, bool accesCaisse, string type);
-        void afficherDetails() override;
+        void augmentationSalaire() override;
+        void afficher() override;   
+        friend ostream& operator<<(ostream& os, const Gestionnaire& g);
+
         ~Gestionnaire();
 };
 class ClientEmployee : public Employe, public Client {
@@ -96,6 +112,11 @@ class ClientEmployee : public Employe, public Client {
         int nbrTransactionsmax; 
     public:
         ClientEmployee(string nom, string prenom, int tel, int CIN, string email, int clientId, string type, DATE ddv, vector<vehicule*> vehicules, int employeId, double salaire, DATE Drecrutement);
+        void augmentationSalaire() override;
+        void afficher() override;   
+        friend ostream& operator<<(ostream& os, const ClientEmployee& ce);
+        void afficherAvantages();
+        void ajouterAvantage(string avantage);
         ~ClientEmployee();
 };
 

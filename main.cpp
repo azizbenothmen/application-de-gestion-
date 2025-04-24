@@ -63,7 +63,27 @@ int main(){
     cout<<"om:"<<om<<endl;
     cout << "*************************************************************************************" << endl;
 
+    DATE date1(1, 1, 2020);
+    DATE date2;
+    date2 = date1; // Utilisation de l'opérateur =
+    cout << " " << date2 << endl;
+    vehicule v1("Toyota", "Corolla", DATE(1, 1, 2020), 10000, "1234");
+    vehicule v2;
+    v2 = v1; // Utilisation de l'opérateur =
+    cout << " " << v2 << endl;
+    Client cc("Dupont", "Jean", 12345678, 98765432, "jean.dupont@email.com", 2, "particulier", DATE(1, 1, 2021), 2, vector<vehicule*>{
+        new vehicule("Renault", "Clio", DATE(1, 1, 2021), 5000, "4321"),
+        new vehicule("Peugeot", "208", DATE(1, 6, 2021), 8000, "5678")
+    });
 
+    c1 = cc;  // Utilisation de l'opérateur =
+    cout << "Client après affectation:" <<c1 << endl;
+    cout << "----------------------------------------------------------" << endl;
+
+    // Test de l'opérateur >> pour Client
+    Client c;
+    cin >> c;
+    cout << "Client saisie: " << c << endl;
     /////////////partie de mohamed aziz taalouch
 
 

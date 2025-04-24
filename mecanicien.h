@@ -15,6 +15,8 @@ class DATE{   //j'ai pas trouvé un type date en c++ donc j'ai crée une classe 
         DATE(int jour, int mois, int annee);
         void afficher();
         friend ostream& operator<<(ostream& os, const DATE& d);
+        DATE& operator=(const DATE& d); // Ajout de l'opérateur d'affectation
+
         ~DATE();
 };
 class Personne{
@@ -28,7 +30,8 @@ class Personne{
         Personne(string nom, string prenom, int tel, int CIN, string email);
         Personne();
         virtual void afficher()=0;
-        friend ostream& operator<<(ostream& os, const Personne& p);
+        friend ostream& operator<<(ostream& os, const Personne& p);  
+        friend istream& operator>>(istream& is, Personne& p);
         void modifier(int tel, string email);
         ~Personne();
 };
@@ -44,6 +47,8 @@ class vehicule{
         vehicule();
         void afficher();
         friend ostream& operator<<(ostream& os, const vehicule& v);
+        vehicule& operator=(const vehicule& v); // Ajout de l'opérateur d'affectation
+
         string getImmatriculation() const;
         void modifierKilometrage(int kilometrage);
         ~vehicule();
@@ -58,11 +63,14 @@ class Client: virtual public Personne{
         vector<vehicule*> vehicules;
     public:
         Client(string nom, string prenom, int tel, int CIN, string email,int id, string type, DATE ddv,int nbrVehicules, vector<vehicule*> vehicules);
+        Client();
         Client(const Client& other);
         Client operator+(const Client& other); 
         void ajouterVehicule(vehicule* v);
         void deleteVehicule(string immatriculation);
         friend ostream& operator<<(ostream& os, const Client& c);
+        Client& operator=(const Client& other);  // Ajout de l'opérateur d'affectation
+        friend istream& operator>>(istream& is, Client& c);
         void afficher();
         void modifier(int tel, string email);
         ~Client();
@@ -76,7 +84,6 @@ class Employe: virtual public Personne{
         Employe(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement);
         virtual void augmentationSalaire()=0;
         friend ostream& operator<<(ostream& os, const Employe& e);
-
         ~Employe();
 };
 class OuvrierMecanicien: public Employe{

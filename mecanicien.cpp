@@ -24,6 +24,15 @@ ostream& operator<<(ostream& os, const DATE& d) {
     return os;
 }
 
+DATE& DATE::operator=(const DATE& d) {
+    if (this != &d) { // Vérification d'auto-affectation
+        jour = d.jour;
+        mois = d.mois;
+        annee = d.annee;
+    }
+    return *this; // Retourne une référence à l'objet courant
+}
+
 
 DATE::~DATE(){
     cout<<"destruction de la date"<<endl;
@@ -70,6 +79,20 @@ void Personne::modifier(int t, string e){
     email=e;
 }
 
+istream& operator>>(istream& is, Personne& p) {
+    cout << "Entrez le nom: ";
+    is >> p.nom;
+    cout << "Entrez le prenom: ";
+    is >> p.prenom;
+    cout << "Entrez le telephone: ";
+    is >> p.tel;
+    cout << "Entrez le CIN: ";
+    is >> p.CIN;
+    cout << "Entrez l'email: ";
+    is >> p.email;
+    return is;
+}
+
 Personne::~Personne(){
     cout<<"destruction de la personne"<<endl;
 }
@@ -109,6 +132,17 @@ ostream& operator<<(ostream& os, const vehicule& v) {
     return os;
 }
 
+vehicule& vehicule::operator=(const vehicule& v) {
+    if (this != &v) { // Vérification d'auto-affectation
+        marque = v.marque;
+        modele = v.modele;
+        dateAchat = v.dateAchat; // Utilise l'opérateur = de DATE
+        kilometrage = v.kilometrage;
+        immatriculation = v.immatriculation;
+    }
+    return *this; // Retourne une référence à l'objet courant
+}
+
 void vehicule::modifierKilometrage(int k){
     kilometrage=k;
 }
@@ -131,6 +165,13 @@ Client::Client(string n, string p, int t, int c, string e,int i, string ty, DATE
     vehicules=v;
 }
 
+Client::Client(){
+    id=0;
+    type="";
+    ddv=DATE(0,0,0);
+    nbrVehicules=0;
+}
+
 Client::Client(const Client& other): Personne(other.nom, other.prenom, other.tel, other.CIN, other.email){
     id=other.id;
     type=other.type;
@@ -148,6 +189,82 @@ Client Client::operator+(const Client& other) {
     }
     result.nbrVehicules = this->nbrVehicules + other.nbrVehicules;
     return result;
+}
+
+Client& Client::operator=(const Client& other) {
+    if (this != &other) {  // Vérification d'auto-affectation
+        // Copie des membres de Personne
+        nom = other.nom;
+        prenom = other.prenom;
+        tel = other.tel;
+        CIN = other.CIN;
+        email = other.email;
+
+        // Copie des membres spécifiques à Client
+        id = other.id;
+        type = other.type;
+        ddv = other.ddv;  // Utilise l'opérateur = de DATE
+        nbrVehicules = other.nbrVehicules;
+
+        // Libération des anciens véhicules
+        for (auto v : vehicules) {
+            delete v;
+        }
+        vehicules.clear();
+
+        // Copie profonde des véhicules
+        for (auto v : other.vehicules) {
+            vehicules.push_back(new vehicule(*v));
+        }
+    }
+    return *this;  // Retourne une référence à l'objet courant
+}
+
+istream& operator>>(istream& is, Client& c) {
+    // Lecture des données de Personne
+    is >> static_cast<Personne&>(c);
+    
+    cout << "Entrez l'ID client: ";
+    is >> c.id;
+    cout << "Entrez le type (particulier/professionnel): ";
+    is >> c.type;
+    
+    cout << "Entrez la date de derniere visite (jour mois annee): ";
+    int j, m, a;
+    is >> j >> m >> a;
+    c.ddv = DATE(j, m, a);
+    
+    cout << "Entrez le nombre de vehicules: ";
+    is >> c.nbrVehicules;
+    
+    // Nettoyer les véhicules existants
+    for (auto v : c.vehicules) {
+        delete v;
+    }
+    c.vehicules.clear();
+    
+    // Lecture des véhicules
+    for (int i = 0; i < c.nbrVehicules; i++) {
+        cout << "Vehicule " << i+1 << ":" << endl;
+        string marque, modele, immatriculation;
+        int kilometrage;
+        int j, m, a;
+        
+        cout << "  Marque: ";
+        is >> marque;
+        cout << "  Modele: ";
+        is >> modele;
+        cout << "  Date d'achat (jour mois annee): ";
+        is >> j >> m >> a;
+        cout << "  Kilometrage: ";
+        is >> kilometrage;
+        cout << "  Immatriculation: ";
+        is >> immatriculation;
+        
+        c.vehicules.push_back(new vehicule(marque, modele, DATE(j, m, a), kilometrage, immatriculation));
+    }
+    
+    return is;
 }
 
 void Client::ajouterVehicule(vehicule* v){

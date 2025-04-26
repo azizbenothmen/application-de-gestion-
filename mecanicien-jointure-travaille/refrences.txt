@@ -1,0 +1,9 @@
+
+
+
+
+
+istream ---->
+ostream ---->
+surcharge opérateur = ----->
+surcharge opérateur + ----->

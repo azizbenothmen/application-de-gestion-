@@ -1,0 +1,4 @@
+La referance est :r145
+Le prix est :2580
+La Date de Fabrication est :12/12/2021
+la duree de garantie est :20

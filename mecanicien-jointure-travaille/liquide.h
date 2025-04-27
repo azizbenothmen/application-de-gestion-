@@ -18,6 +18,7 @@ class liquide : public virtual produit{
     public:
         liquide(string referance, double prix, DATE dateFabrication, int dureeGarantie, string flammable, float volume, string viscosite, string contenance, string type, string description);
         liquide();
+        void  Remise(float) override;
         friend istream& operator>>(istream& in ,liquide& );
         friend ostream& operator<<(ostream& out,liquide&);
         //Fonctions Fichier

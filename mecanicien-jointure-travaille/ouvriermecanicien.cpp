@@ -1,7 +1,7 @@
 #include "ouvriermecanicien.h"
 
 ///////////ouvrier mecanicien
-
+OuvrierMecanicien::OuvrierMecanicien(){}
 OuvrierMecanicien::OuvrierMecanicien(string n, string p, int t, int c, string e, int i, double s, DATE d, string s1, vector<vehicule*> v) 
     : Personne(n, p, t, c, e), Employe(n, p, t, c, e, i, s, d) {
     specialite = s1;

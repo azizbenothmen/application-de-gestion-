@@ -18,6 +18,7 @@ class pieceElectronique : virtual public produit{
          pieceElectronique(string referance, double prix, DATE dateFabrication, int dureeGarantie, double tension, double courant, vector<string> compatibilite,int Nbr);
          pieceElectronique(const  pieceElectronique& other);
          pieceElectronique();
+         void  Remise(float);
          void ajouterPiece(pieceElectronique*);
          friend istream& operator>>(istream& in,pieceElectronique&) ;
          friend ostream& operator<<(ostream& out,pieceElectronique&);

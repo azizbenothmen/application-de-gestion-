@@ -19,6 +19,7 @@ using namespace std;
 #include"mecatronique.h"
 #include"facture.h"
 #include"reparation.h"
+#include"rendezVous.h"
 
 
 int main(){
@@ -134,11 +135,11 @@ int main(){
     c1.creerFichier("clients.txt");
     c1.enregistrerFichier("clients.txt");
     c1.afficherFichier("clients.txt");
-
+*/
     cout<<"----------------------------------------------------Ben Othmane------------------------------------------:"<<endl;
     DATE d1,d2;
     int t,com;
-   
+   /*
     cout<<"--------classe produit-------------------"<<endl;
     produit p1,p2;
     cin>>p1;
@@ -147,6 +148,8 @@ int main(){
     cout<<"Nbr de produit est "<<com<<endl;
     cout<<p1;
     cout<<p2;
+*/
+    
 
     cout<<"--------classe Liquide-------------------"<<endl;
     liquide l1,l2;
@@ -175,22 +178,23 @@ int main(){
     pe.ajouterPiece(p);
     pe.ajouterPiece(pi2);
     pe.afficherEnsemble();
-    */
+    
     
 
     cout<<"-----------classe pieceMecatronique----------"<<endl;
     pieceMecatronique* pme;
+    pieceMecatronique pmca;
     pieceMecatronique* pMC;
     pme = new pieceMecatronique("PM004", 299.99, {15, 4, 2023}, 36, 12.0, 3.0, {"Renault Clio", "Peugeot 208", "Volkswagen Golf"},5, "Haute", "Capteur", "Aluminium");
     pMC= new pieceMecatronique("PM001", 199.99, {15, 4, 2023}, 36, 12.0, 3.0, {"Renault Clio", "Peugeot 208", "Volkswagen Golf"},5, "Haute", "Capteur", "Aluminium");
-    cout<<pMC;
-    cout<<pme;
+    cin>>pmca;
+    cout<<pmca;
     pMC->ajouterPieceM(pMC);
     pMC->ajouterPieceM(pme);
     pMC->afficherEnsemble();
    
     
-/*
+
     cout<<"---------classe facture-------------"<<endl;
 
     facture f,f1,f2;
@@ -208,21 +212,22 @@ int main(){
     delete pme,p,pi2,pMC;
     
     cout<<"-----Partie Fichier------"<<endl;
-    cout<<"Classe Prouit"<<endl;
+    /*cout<<"Classe Prouit"<<endl;
     p1.creerFichier("produit.txt");
     p1.enregistrerFichier("produit.txt");
     p1.afficherFichier("produit.txt");
 
-    
+    */
     cout<<"Classe liquide"<<endl;
     l1.creerFichier("liquide.txt");
     l1.enregisterFichierLiquide("liquide.txt");
     l1.afficherFichierLiquide("liquide.txt");
 
     cout<<"---------classe reparation-------------"<<endl;
-    reparation r();
+    reparation r;
     
-    */
+    cout<<"-----------classe RendezVous-----------"<<endl;
+    
 
     return 0;
 }

@@ -49,6 +49,8 @@ ostream& operator<<(ostream& out , pieceMecanique& pm ){
 
 }
 
-
+void pieceMecanique::Remise(float p){
+    prix=prix-(prix*p/100);
+}
 
 

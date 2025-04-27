@@ -19,8 +19,12 @@ class pieceMecanique : virtual public produit{
         ~pieceMecanique();
         void afficherME();
         pieceMecanique();
+        void  Remise(float);
         friend istream& operator>>(istream& in ,pieceMecanique& );
         friend ostream& operator<<(ostream& out , pieceMecanique& );
+        void SetQualite(string qualite){this->qualite=qualite;};
+        void SetCategorie(string cat){categorie=cat;};
+        void SetMat(string mat){materiaux=mat;};
         string getqualite(){return qualite;};
         string getcategorie(){return categorie;};
         string getmateriaux(){return materiaux;};

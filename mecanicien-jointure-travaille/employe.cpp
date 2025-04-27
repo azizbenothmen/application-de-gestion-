@@ -1,6 +1,7 @@
 #include "employe.h"
 
 ///////////employe
+Employe::Employe(){}
 Employe::Employe(string n, string p, int t, int c, string e,int i, double s, DATE d): 
 Personne(n,p,t,c,e){
     id=i;

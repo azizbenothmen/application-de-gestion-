@@ -23,8 +23,8 @@ class reparation{
        reparation(DATE ,Client,vehicule,string,facture );
        reparation();
        ~reparation();
-       friend istream& operator>>(istream& in,reparation);
-       friend ostream& operator<<(ostream& out,reparation);
+       //friend istream& operator>>(istream& in,reparation);
+       //friend ostream& operator<<(ostream& out,reparation);
 
 
 };

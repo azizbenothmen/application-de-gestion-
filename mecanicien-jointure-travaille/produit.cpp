@@ -99,3 +99,7 @@ void produit::afficherFichier(const string& p) {
         cout << "Exception: " << e.what() << endl;
     }
 }
+
+void produit::Remise(float p){
+    prix=prix-(prix*p/100);
+}

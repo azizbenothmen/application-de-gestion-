@@ -1,10 +1,10 @@
-La referance est :qsd2
-Le prix est :47
-La Date de Fabrication est :15/15/1515
-la duree de garantie est :1
-flammable=false
-volume=4
-viscosite=5
-contenance=4
-type=5
-Description:8
+La referance est :f15161
+Le prix est :12
+La Date de Fabrication est :12/2/2023
+la duree de garantie est :18
+flammable=true
+volume=19
+viscosite=O
+contenance=eau
+type=eau
+Description:eau

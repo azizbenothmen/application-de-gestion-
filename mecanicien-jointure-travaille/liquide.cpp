@@ -111,6 +111,9 @@ void liquide::afficherFichierLiquide(const string& f) {
         cout << "Exception: " << e.what() << endl;
     }
 }
+void liquide::Remise(float p){
+    prix=prix-(prix*p/100);
+}
        
 
 

@@ -21,7 +21,8 @@ class produit
     public:
         produit(string referance, double prix, DATE dateFabrication, int dureeGarantie);
         produit();
-        void afficherdetailsp();
+        void virtual Remise(float)=0;
+        void  virtual  afficherdetailsp();
         static int getCompteur() { return compteur; };
         friend istream& operator>>(istream& in,produit&);
         friend ostream& operator<<(ostream& out , produit& );

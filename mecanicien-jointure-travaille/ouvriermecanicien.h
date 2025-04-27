@@ -1,6 +1,7 @@
 #include "employe.h"
 #include "personne.h"
 #include "vehicule.h"
+#pragma once
 
 class OuvrierMecanicien: public Employe{
     private:
@@ -9,6 +10,7 @@ class OuvrierMecanicien: public Employe{
     public:
         OuvrierMecanicien(string nom, string prenom, int tel, int CIN, string email,int id, double salaire, DATE Drecrutement, string specialite, vector<vehicule*> vehiculesEntretenus);
         OuvrierMecanicien(const OuvrierMecanicien& other);
+        OuvrierMecanicien();
 
         void augmentationSalaire() override;
         void afficher() override;   

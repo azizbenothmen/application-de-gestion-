@@ -1,0 +1,6 @@
+Immatriculation: 1234
+Marque: Toyota
+Modele: Corolla
+Date d'achat: 1/2/2023
+Kilometrage: 10000
+-------------------
